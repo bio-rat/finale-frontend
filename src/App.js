@@ -9,6 +9,7 @@ import Signup from "./Signup";
 import Profile from "./Profile";
 import SellForm from "./SellForm";
 import AgentsList from "./AgentsList";
+import Messages from "./Messages";
 
 const CLOUDINARY_UPLOAD_PRESET = "etudeofmemories";
 const CLOUDINARY_UPLOAD_URL =
@@ -23,16 +24,20 @@ class App extends Component {
       uploadedFileCloudinaryUrl: "",
       uploadedFile: null,
       is_broker: false,
-      agentsList: []
+      agentsList: [],
+      contactList: []
     };
   }
 
   componentDidMount() {
+    // get data from local storage
     const existingToken = localStorage.getItem("token");
     const existingUser = localStorage.getItem("username");
     const existingUserId = localStorage.getItem("user_id");
     const existingImgurl = localStorage.getItem("imgurl");
     const existingBroker = localStorage.getItem("is_broker");
+
+    // turn boolean stored on localstorage which is string into boolean
     let is_broker;
     if (existingBroker && typeof existingBroker === "string") {
       if (existingBroker === "true") {
@@ -41,7 +46,8 @@ class App extends Component {
         is_broker = false;
       }
     }
-    // console.log("existing token: ", existingToken);
+
+    // store local storage data into state
     if (existingToken) {
       this.setState({
         token: existingToken,
@@ -51,9 +57,12 @@ class App extends Component {
         user_id: existingUserId
       });
     }
+
+    // fetch the all agents list
     this.fetchAgentsList();
   }
 
+  // fetch all the agents to show on discovery tab
   fetchAgentsList = () => {
     const url = "http://localhost:5000/agentslist";
     const token = "Token " + this.state.token;
@@ -75,6 +84,7 @@ class App extends Component {
       });
   };
 
+  // function: handle the login functuon
   handleLogin = (email, password) => {
     const url = "http://localhost:5000/login";
     const token = "Token " + this.state.token;
@@ -100,13 +110,16 @@ class App extends Component {
         localStorage.setItem("is_broker", data["is_broker"]);
         localStorage.setItem("user_id", data["user_id"]);
 
-        this.setState({
-          token: data["token"],
-          username: data["username"],
-          imgurl: data["imgurl"],
-          is_broker: data["is_broker"],
-          user_id: data["user_id"]
-        });
+        this.setState(
+          {
+            token: data["token"],
+            username: data["username"],
+            imgurl: data["imgurl"],
+            is_broker: data["is_broker"],
+            user_id: data["user_id"]
+          }
+          // () => console.log(this.state.contactList)
+        );
       });
   };
 
@@ -135,6 +148,7 @@ class App extends Component {
       .then(data => {
         console.log(data);
       });
+
     // remove img url
     this.setState({
       uploadedFileCloudinaryUrl: "",
@@ -142,6 +156,7 @@ class App extends Component {
     });
   };
 
+  // list new house
   handleListHouse = (address, city, district, ward, street, number) => {
     const url = "http://localhost:5000/sell";
     const token = "Token " + this.state.token;
@@ -188,10 +203,13 @@ class App extends Component {
         console.log(data);
       });
 
+    // clear current username and token
     this.setState({
       username: "",
       token: ""
     });
+
+    // clear all user datas
     localStorage.clear();
   };
 
@@ -224,6 +242,28 @@ class App extends Component {
     });
   };
 
+  // fetch chosen houses contact list
+  handleFetchContactList = () => {
+    const url = "http://localhost:5000/contactlist";
+    const token = "Token " + this.state.token;
+    fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: token
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        this.setState({
+          contactList: data.contactList
+        });
+      });
+  };
+
   render() {
     return (
       <div className="App">
@@ -233,6 +273,8 @@ class App extends Component {
           onClickLogout={this.handleLogout}
           imgurl={this.state.imgurl}
           is_broker={this.state.is_broker}
+          contactList={this.state.contactList}
+          handleFetchContactList={this.handleFetchContactList}
         />
 
         <Switch>
@@ -271,7 +313,13 @@ class App extends Component {
           <Route
             path="/profile/:id"
             exact
-            render={props => <Profile token={this.state.token} {...props} />}
+            render={props => (
+              <Profile
+                user_id={this.state.user_id}
+                token={this.state.token}
+                {...props}
+              />
+            )}
           />
           <Route
             path="/sell/"
@@ -285,6 +333,13 @@ class App extends Component {
             exact
             render={props => (
               <AgentsList agentsList={this.state.agentsList} {...props} />
+            )}
+          />
+          <Route
+            path="/messages/"
+            exact
+            render={props => (
+              <Messages user_id={this.state.user_id} {...props} />
             )}
           />
         </Switch>

@@ -3,6 +3,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
 
 export default class Navbar extends Component {
   render() {
@@ -78,9 +80,67 @@ export default class Navbar extends Component {
                   <span className="nav-link">Agent finder</span>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link
+                  to={{
+                    pathname: "/messages/"
+                  }}
+                >
+                  <span className="nav-link">Messages</span>
+                </Link>
+              </li>
             </ul>
-            {this.props.username ? (
-              <ul className="navbar-nav ml-auto nav-flex-icons">
+            {/* messagesssssssssssss */}
+            <ul className="navbar-nav nav-flex-icons">
+              <li className="nav-item avatar dropdown ml-auto">
+                <a
+                  className="nav-link dropdown-toggle"
+                  onClick={() => this.props.handleFetchContactList()}
+                  id="navbarDropdownMenuLink-55"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <FontAwesomeIcon
+                    icon={faCommentDots}
+                    size="2x"
+                    style={{ color: "white", cursor: "pointer" }}
+                  />
+                </a>
+
+                <div
+                  className="dropdown-menu dropdown-menu-right dropdown-secondary row"
+                  aria-labelledby="navbarDropdownMenuLink-55"
+                >
+                  {this.props.contactList.map(x => (
+                    <span key={x.room_id}>
+                      <Link
+                        to={{
+                          pathname: `/message/${x.room_id}`
+                        }}
+                        className="dropdown-item message-nav"
+                      >
+                        <div className="col-1">
+                          <img
+                            src={x.imgurl}
+                            className="fit-cover"
+                            alt="avatar image"
+                            height="42"
+                            width="42"
+                          />
+                        </div>
+
+                        <div className="col-4 text-start">
+                          <b>{x.username}</b>
+                          <div>{x.address}</div>
+                        </div>
+                      </Link>
+                      <div className="dropdown-divider" />
+                    </span>
+                  ))}
+                </div>
+              </li>
+              {this.props.username ? (
                 <li className="nav-item avatar dropdown">
                   <a
                     className="nav-link dropdown-toggle"
@@ -91,7 +151,7 @@ export default class Navbar extends Component {
                   >
                     <img
                       src={this.props.imgurl}
-                      className="avatar-img"
+                      className="fit-cover boder-shadow"
                       alt="avatar image"
                       height="42"
                       width="42"
@@ -109,9 +169,6 @@ export default class Navbar extends Component {
                     >
                       Account
                     </Link>
-                    {/* <a href="/profile/" className="dropdown-item">
-                      Account
-                    </a> */}
                     <div className="dropdown-divider" />
                     <span className="dropdown-item">Create new: </span>
                     <a
@@ -134,27 +191,27 @@ export default class Navbar extends Component {
                     </a>
                   </div>
                 </li>
-              </ul>
-            ) : (
-              <>
-                <Link
-                  to={{
-                    pathname: "/login/"
-                  }}
-                  className="nav-link"
-                >
-                  <span style={{ color: "white" }}>Login</span>
-                </Link>
-                <Link
-                  to={{
-                    pathname: "/signup/"
-                  }}
-                  className="nav-link"
-                >
-                  <span style={{ color: "white" }}>Signup</span>
-                </Link>
-              </>
-            )}
+              ) : (
+                <>
+                  <Link
+                    to={{
+                      pathname: "/login/"
+                    }}
+                    className="nav-link"
+                  >
+                    <span style={{ color: "white" }}>Login</span>
+                  </Link>
+                  <Link
+                    to={{
+                      pathname: "/signup/"
+                    }}
+                    className="nav-link"
+                  >
+                    <span style={{ color: "white" }}>Signup</span>
+                  </Link>
+                </>
+              )}
+            </ul>
           </div>
         </nav>
       </div>

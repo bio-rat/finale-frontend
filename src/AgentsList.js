@@ -41,7 +41,7 @@ export default class AgentsList extends Component {
               </div>
               <div className="col-md-3 text-end">
                 <ul className="list-unstyled">
-                  <li>Review 06/09/2019</li>
+                  <li>Last review 06/09/2019</li>
                   <li>
                     "Man this guy is goooddddddddddddd dsa ddsa das das dsad sad
                     das dasd asd asdas dassd as ....."
