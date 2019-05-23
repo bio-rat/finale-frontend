@@ -20,7 +20,7 @@ export default class SellerProfile extends Component {
   }
 
   getUserData() {
-    const url = `http://localhost:5000/profile/${this.props.match.params.id}`;
+    const url = `https://realtorland.herokuapp.com/profile/${this.props.match.params.id}`;
     const token = "Token " + this.props.token;
     fetch(url, {
       method: "GET",
@@ -45,7 +45,7 @@ export default class SellerProfile extends Component {
   }
 
   getHousesList() {
-    const url = "http://localhost:5000/houseslist";
+    const url = "https://realtorland.herokuapp.com/houseslist";
     const token = "Token " + this.props.token;
 
     fetch(url, {
@@ -76,7 +76,7 @@ export default class SellerProfile extends Component {
   };
 
   handleChooseAgent = house_id => {
-    const url = "http://localhost:5000/chooseAgent";
+    const url = "https://realtorland.herokuapp.com/chooseAgent";
     const token = "Token " + this.props.token;
 
     fetch(url, {

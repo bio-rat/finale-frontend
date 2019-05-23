@@ -9,7 +9,7 @@ export default class Messages extends Component {
       messages: [],
       room_id: null
     };
-    this.socket = socketIOClient("http://localhost:5000/");
+    this.socket = socketIOClient("https://realtorland.herokuapp.com/");
   }
 
   componentWillReceiveProps(nextProps) {

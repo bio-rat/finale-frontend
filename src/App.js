@@ -64,7 +64,7 @@ class App extends Component {
 
   // fetch all the agents to show on discovery tab
   fetchAgentsList = () => {
-    const url = "http://localhost:5000/agentslist";
+    const url = "https://realtorland.herokuapp.com/agentslist";
     const token = "Token " + this.state.token;
     fetch(url, {
       method: "GET",
@@ -86,7 +86,7 @@ class App extends Component {
 
   // function: handle the login functuon
   handleLogin = (email, password) => {
-    const url = "http://localhost:5000/login";
+    const url = "https://realtorland.herokuapp.com/login";
     const token = "Token " + this.state.token;
     fetch(url, {
       method: "POST",
@@ -124,7 +124,7 @@ class App extends Component {
   };
 
   handleSignup = (email, password, username, is_broker) => {
-    const url = "http://localhost:5000/signup";
+    const url = "https://realtorland.herokuapp.com/signup";
     const token = "Token " + this.state.token;
     const imgurl = this.state.uploadedFileCloudinaryUrl;
     fetch(url, {
@@ -158,7 +158,7 @@ class App extends Component {
 
   // list new house
   handleListHouse = (address, city, district, ward, street, number) => {
-    const url = "http://localhost:5000/sell";
+    const url = "https://realtorland.herokuapp.com/sell";
     const token = "Token " + this.state.token;
 
     fetch(url, {
@@ -186,7 +186,7 @@ class App extends Component {
   };
 
   handleLogout = () => {
-    const url = "http://localhost:5000/logout";
+    const url = "https://realtorland.herokuapp.com/logout";
     const token = "Token " + this.state.token;
     fetch(url, {
       method: "GET",
@@ -244,7 +244,7 @@ class App extends Component {
 
   // fetch chosen houses contact list
   handleFetchContactList = () => {
-    const url = "http://localhost:5000/contactlist";
+    const url = "https://realtorland.herokuapp.com/contactlist";
     const token = "Token " + this.state.token;
     fetch(url, {
       method: "GET",
