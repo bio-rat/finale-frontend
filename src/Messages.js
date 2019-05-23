@@ -6,15 +6,28 @@ export default class Messages extends Component {
     super();
     this.state = {
       message: "",
-      messages: []
+      messages: [],
+      room_id: null
     };
     this.socket = socketIOClient("http://localhost:5000/");
-    // window.test = this.socket;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("leaved", this.props.match.params.id);
+    this.socket.emit("leave", { room_id: this.props.match.params.id });
+
+    console.log("joined", nextProps.match.params.id);
+    this.socket.emit("join", { room_id: nextProps.match.params.id });
   }
 
   componentDidMount() {
+    console.log("joined", this.props.match.params.id);
+    this.socket.emit("join", { room_id: this.props.match.params.id });
+
     this.socket.on("back_message", data => {
-      let messages = this.state.messages.concat([data["message"]]);
+      let messages = this.state.messages.concat([
+        { message: data["message"], username: data["username"] }
+      ]);
       this.setState({
         messages: messages
       });
@@ -27,21 +40,8 @@ export default class Messages extends Component {
     });
   };
 
-  handleChooseRoom = room_id => {
-    this.setState(
-      {
-        room_id: room_id
-      },
-      () => {
-        this.socket.emit("join", { room_id: this.state.room_id });
-        console.log(this.state.room_id);
-      }
-    );
-  };
-
   handleSubmit(e) {
     e.preventDefault();
-    // alert(this.state.message);
     this.setState({
       message: ""
     });
@@ -49,29 +49,15 @@ export default class Messages extends Component {
     this.socket.emit("my_message", {
       message: this.state.message,
       user_id: this.props.user_id,
-      room_id: this.state.room_id
+      username: this.props.username,
+      room_id: this.props.match.params.id
     });
   }
 
   render() {
     return (
       <div className="container text-center">
-        <div>
-          <button
-            className="btn btn-success"
-            onClick={() => this.handleChooseRoom(215)}
-          >
-            Choose room 215
-          </button>
-
-          <button
-            className="btn btn-success"
-            onClick={() => this.handleChooseRoom(519)}
-          >
-            Choose room 519
-          </button>
-        </div>
-        <h1>Chat Here</h1>
+        <h6>Room {this.props.match.params.id}</h6>
         <form onSubmit={e => this.handleSubmit(e)}>
           <input
             type="text"
@@ -81,13 +67,14 @@ export default class Messages extends Component {
           />
           <input type="submit" value="Send" />
         </form>
-        <h1>Here are the messages</h1>
         <div style={{ padding: 50, backgroundColor: "lightgray" }}>
-          <ol>
+          <ul>
             {this.state.messages.map((message, index) => (
-              <li key={index}>{message}</li>
+              <li key={index}>
+                <b>{message.username}</b>: {message.message}
+              </li>
             ))}
-          </ol>
+          </ul>
         </div>
       </div>
     );

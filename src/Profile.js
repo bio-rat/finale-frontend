@@ -379,7 +379,7 @@ export default class SellerProfile extends Component {
         {/* Choose Agents modal/ only show when not user profile */}
         {this.props.user_id !== this.props.match.params.id && (
           <div className="card-footer text-center">
-            <button onClick={this.handleShowModal}>
+            <button className="btn btn-primary" onClick={this.handleShowModal}>
               Connect with this agent
             </button>
             <div
@@ -426,12 +426,12 @@ export default class SellerProfile extends Component {
                       <ul>
                         {this.state.housesList.map(x => (
                           <li key={x.house_id}>
-                            <span>{x.address}</span>
+                            <span>{x.address} </span>
 
                             {/* Check if houses is chosen or not */}
                             {x.is_chosen ? (
                               <span className="text-danger">
-                                this house is chosen
+                                (this house is chosen)
                               </span>
                             ) : (
                               <button

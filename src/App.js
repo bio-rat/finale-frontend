@@ -336,10 +336,14 @@ class App extends Component {
             )}
           />
           <Route
-            path="/messages/"
+            path="/messages/:id"
             exact
             render={props => (
-              <Messages user_id={this.state.user_id} {...props} />
+              <Messages
+                user_id={this.state.user_id}
+                username={this.state.username}
+                {...props}
+              />
             )}
           />
         </Switch>

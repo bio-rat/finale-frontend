@@ -46,7 +46,7 @@ export default class Navbar extends Component {
                   <span className="nav-link">Sell</span>
                 </Link>
               </li>
-              <li className="nav-item dropdown">
+              {/* <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
                   id="navbarDropdownMenuLink-555"
@@ -70,7 +70,7 @@ export default class Navbar extends Component {
                     Design UI/UX{" "}
                   </a>
                 </div>
-              </li>
+              </li> */}
               <li className="nav-item active">
                 <Link
                   to={{
@@ -80,22 +80,17 @@ export default class Navbar extends Component {
                   <span className="nav-link">Agent finder</span>
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link
-                  to={{
-                    pathname: "/messages/"
-                  }}
-                >
-                  <span className="nav-link">Messages</span>
-                </Link>
-              </li>
             </ul>
-            {/* messagesssssssssssss */}
             <ul className="navbar-nav nav-flex-icons">
-              <li className="nav-item avatar dropdown ml-auto">
+              <li
+                onClick={() => {
+                  console.log("fetch contact list again");
+                  this.props.handleFetchContactList();
+                }}
+                className="nav-item avatar dropdown ml-auto"
+              >
                 <a
                   className="nav-link dropdown-toggle"
-                  onClick={() => this.props.handleFetchContactList()}
                   id="navbarDropdownMenuLink-55"
                   data-toggle="dropdown"
                   aria-haspopup="true"
@@ -116,7 +111,7 @@ export default class Navbar extends Component {
                     <span key={x.room_id}>
                       <Link
                         to={{
-                          pathname: `/message/${x.room_id}`
+                          pathname: `/messages/${x.room_id}`
                         }}
                         className="dropdown-item message-nav"
                       >
