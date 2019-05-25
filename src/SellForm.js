@@ -37,16 +37,12 @@ export default class SellForm extends Component {
       this.state.street,
       this.state.number
     );
-    this.props.history.push("/home/");
+    this.props.history.push("/discovery/");
   };
 
   render() {
     return (
-      <div className="container">
-        <div className="py-5 text-center">
-          <h2>House listing</h2>
-        </div>
-
+      <div className="container mb-5">
         <div className="row">
           <div className="col-md-12 order-md-1">
             <h4 className="mb-3">Enter address to list your house</h4>
@@ -162,7 +158,7 @@ export default class SellForm extends Component {
               </div>
 
               <button
-                className="btn btn-primary btn-lg btn-block"
+                className="button button-primary button-shadow"
                 onClick={() => this.onClickListHouse()}
               >
                 List this house

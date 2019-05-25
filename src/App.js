@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import request from "superagent";
 import Login from "./Login";
 import Navbar from "./Navbar";
@@ -10,6 +10,7 @@ import Profile from "./Profile";
 import SellForm from "./SellForm";
 import AgentsList from "./AgentsList";
 import Messages from "./Messages";
+import Footer from "./Footer";
 
 const CLOUDINARY_UPLOAD_PRESET = "etudeofmemories";
 const CLOUDINARY_UPLOAD_URL =
@@ -265,6 +266,7 @@ class App extends Component {
   };
 
   render() {
+    const isLoggedIn = this.state.username;
     return (
       <div className="App">
         <Navbar
@@ -299,7 +301,7 @@ class App extends Component {
             )}
           />
           <Route
-            path="/home/"
+            path="/"
             exact
             render={props => (
               <Home
@@ -324,29 +326,50 @@ class App extends Component {
           <Route
             path="/sell/"
             exact
-            render={props => (
-              <SellForm onClickListHouse={this.handleListHouse} {...props} />
-            )}
+            render={props =>
+              isLoggedIn ? (
+                <SellForm onClickListHouse={this.handleListHouse} {...props} />
+              ) : (
+                <Redirect
+                  to={{ pathname: "/login/", state: { from: props.location } }}
+                />
+              )
+            }
           />
           <Route
             path="/discovery/"
             exact
-            render={props => (
-              <AgentsList agentsList={this.state.agentsList} {...props} />
-            )}
+            render={props =>
+              isLoggedIn ? (
+                <AgentsList agentsList={this.state.agentsList} {...props} />
+              ) : (
+                <Redirect
+                  to={{ pathname: "/login/", state: { from: props.location } }}
+                />
+              )
+            }
           />
           <Route
             path="/messages/:id"
             exact
-            render={props => (
-              <Messages
-                user_id={this.state.user_id}
-                username={this.state.username}
-                {...props}
-              />
-            )}
+            render={props =>
+              isLoggedIn ? (
+                <Messages
+                  user_id={this.state.user_id}
+                  username={this.state.username}
+                  user1img={this.state.imgurl}
+                  {...props}
+                />
+              ) : (
+                <Redirect
+                  to={{ pathname: "/login/", state: { from: props.location } }}
+                />
+              )
+            }
           />
         </Switch>
+
+        <Footer />
       </div>
     );
   }

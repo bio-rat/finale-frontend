@@ -23,10 +23,10 @@ export default class AgentsList extends Component {
               <div className="col-md-2">
                 <ul className="list-unstyled">
                   <li>
-                    <b style={{ color: "purple" }}>{x.username}</b>
+                    <b style={{ color: "#FF4D79" }}>{x.username}</b>
                   </li>
                   <li>(+84) 3969696969</li>
-                  <li style={{ color: "green" }}>♥ ♥ ♥ ♥ ♥</li>
+                  <li style={{ color: "#FF4D79" }}>♥ ♥ ♥ ♥ ♥</li>
                   <li>sadsa</li>
                   <li>150 reviews</li>
                 </ul>
@@ -58,7 +58,7 @@ export default class AgentsList extends Component {
                   <FontAwesomeIcon
                     icon={faChevronRight}
                     size="5x"
-                    style={{ color: "purple", cursor: "pointer" }}
+                    className="choose-icon"
                   />
                 </Link>
               </div>

@@ -1,16 +1,16 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import "./Navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
 
 export default class Navbar extends Component {
   render() {
     return (
       <div>
-        <nav className="mb-1 navbar navbar-expand-lg navbar-dark secondary-color lighten-1 nav-style">
+        <div className="mb-1 navbar navbar-expand-lg navbar-dark secondary-color lighten-1 nav-style">
           <span className="navbar-brand">RealtorLand</span>
           <button
             className="navbar-toggler"
@@ -31,110 +31,97 @@ export default class Navbar extends Component {
               <li className="nav-item active">
                 <Link
                   to={{
-                    pathname: "/home/"
+                    pathname: "/"
                   }}
                 >
                   <span className="nav-link">Home</span>
                 </Link>
               </li>
-              <li className="nav-item active">
-                <Link
-                  to={{
-                    pathname: "/sell/"
-                  }}
-                >
-                  <span className="nav-link">Sell</span>
-                </Link>
-              </li>
-              {/* <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  id="navbarDropdownMenuLink-555"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Categories
-                </a>
-                <div
-                  className="dropdown-menu dropdown-secondary"
-                  aria-labelledby="navbarDropdownMenuLink-555"
-                >
-                  <a className="dropdown-item" href="#">
-                    Frontend Development
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Backend Development{" "}
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Design UI/UX{" "}
-                  </a>
-                </div>
-              </li> */}
-              <li className="nav-item active">
-                <Link
-                  to={{
-                    pathname: "/discovery/"
-                  }}
-                >
-                  <span className="nav-link">Agent finder</span>
-                </Link>
-              </li>
+              {!this.props.is_broker && (
+                <>
+                  <li className="nav-item active">
+                    <Link
+                      to={{
+                        pathname: "/sell/"
+                      }}
+                    >
+                      <span className="nav-link">Sell</span>
+                    </Link>
+                  </li>
+
+                  <li className="nav-item active">
+                    <Link
+                      to={{
+                        pathname: "/discovery/"
+                      }}
+                    >
+                      <span className="nav-link text-link">Agent finder</span>
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
             <ul className="navbar-nav nav-flex-icons">
-              <li
-                onClick={() => {
-                  console.log("fetch contact list again");
-                  this.props.handleFetchContactList();
-                }}
-                className="nav-item avatar dropdown ml-auto"
-              >
-                <a
-                  className="nav-link dropdown-toggle"
-                  id="navbarDropdownMenuLink-55"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
+              {this.props.username && (
+                <li
+                  onClick={() => {
+                    console.log("fetch contact list again");
+                    this.props.handleFetchContactList();
+                  }}
+                  className="nav-item avatar dropdown ml-auto"
                 >
-                  <FontAwesomeIcon
-                    icon={faCommentDots}
-                    size="2x"
-                    style={{ color: "white", cursor: "pointer" }}
-                  />
-                </a>
+                  <a
+                    className="nav-link dropdown-toggle"
+                    id="navbarDropdownMenuLink-55"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <FontAwesomeIcon
+                      icon={faComment}
+                      size="1x"
+                      style={{ color: "white", cursor: "pointer" }}
+                    />
+                  </a>
 
-                <div
-                  className="dropdown-menu dropdown-menu-right dropdown-secondary row"
-                  aria-labelledby="navbarDropdownMenuLink-55"
-                >
-                  {this.props.contactList.map(x => (
-                    <span key={x.room_id}>
-                      <Link
-                        to={{
-                          pathname: `/messages/${x.room_id}`
-                        }}
-                        className="dropdown-item message-nav"
-                      >
-                        <div className="col-1">
-                          <img
-                            src={x.imgurl}
-                            className="fit-cover"
-                            alt="avatar image"
-                            height="42"
-                            width="42"
-                          />
-                        </div>
+                  <div
+                    className="dropdown-menu dropdown-menu-right dropdown-secondary row"
+                    aria-labelledby="navbarDropdownMenuLink-55"
+                  >
+                    {this.props.contactList.map(x => (
+                      <span key={x.room_id}>
+                        <Link
+                          to={{
+                            pathname: `/messages/${x.room_id}`,
+                            state: {
+                              user2img: x.imgurl
+                            }
+                          }}
+                          className="dropdown-item message-nav text-link"
+                        >
+                          <span className="col-1">
+                            <b>{x.username} </b>
 
-                        <div className="col-4 text-start">
-                          <b>{x.username}</b>
-                          <div>{x.address}</div>
-                        </div>
-                      </Link>
-                      <div className="dropdown-divider" />
-                    </span>
-                  ))}
-                </div>
-              </li>
+                            <img
+                              src={x.imgurl}
+                              className="fit-cover boder-shadow"
+                              alt="avatar image"
+                              height="42"
+                              width="42"
+                            />
+                          </span>
+
+                          <span className="col-4 text-start">
+                            <span>{x.address}</span>
+                          </span>
+                        </Link>
+                        {/* <div className="dropdown-divider" /> */}
+                      </span>
+                    ))}
+                  </div>
+                </li>
+              )}
+
               {this.props.username ? (
                 <li className="nav-item avatar dropdown">
                   <a
@@ -148,8 +135,8 @@ export default class Navbar extends Component {
                       src={this.props.imgurl}
                       className="fit-cover boder-shadow"
                       alt="avatar image"
-                      height="42"
-                      width="42"
+                      // height="42"
+                      // width="42"
                     />
                   </a>
                   <div
@@ -160,26 +147,21 @@ export default class Navbar extends Component {
                       to={{
                         pathname: `/profile/${this.props.user_id}`
                       }}
-                      className="dropdown-item"
+                      className="dropdown-item text-link"
                     >
                       Account
                     </Link>
                     <div className="dropdown-divider" />
                     <span className="dropdown-item">Create new: </span>
-                    <a
-                      className="dropdown-item pl-5"
-                      href="{{ url_for('create_post')}}"
-                    >
+                    <a className="dropdown-item pl-5" href="">
                       <small>New post</small>
                     </a>
-                    <a
-                      className="dropdown-item pl-5"
-                      href="{{ url_for('create_topic')}}"
-                    >
+                    <a className="dropdown-item pl-5" href="">
                       <small>New topic</small>
                     </a>
                     <a
-                      className="dropdown-item text-primary pointy-cursor"
+                      className="dropdown-item pointy-cursor"
+                      style={{ color: "#FF4D79" }}
                       onClick={() => this.props.onClickLogout()}
                     >
                       Log Out
@@ -192,7 +174,7 @@ export default class Navbar extends Component {
                     to={{
                       pathname: "/login/"
                     }}
-                    className="nav-link"
+                    className="nav-link text-link"
                   >
                     <span style={{ color: "white" }}>Login</span>
                   </Link>
@@ -200,7 +182,7 @@ export default class Navbar extends Component {
                     to={{
                       pathname: "/signup/"
                     }}
-                    className="nav-link"
+                    className="nav-link text-link"
                   >
                     <span style={{ color: "white" }}>Signup</span>
                   </Link>
@@ -208,7 +190,7 @@ export default class Navbar extends Component {
               )}
             </ul>
           </div>
-        </nav>
+        </div>
       </div>
     );
   }

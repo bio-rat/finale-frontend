@@ -50,7 +50,7 @@ export default class Signup extends Component {
     let loadingtext;
     if (!this.props.uploadedFile && !this.props.imgurl) {
       loadingtext = (
-        <span className="pl-3" style={{ color: "purple" }}>
+        <span className="pl-3" style={{ color: "#FF4D79" }}>
           Click here to upload
         </span>
       );
@@ -58,7 +58,7 @@ export default class Signup extends Component {
       loadingtext = (
         <img
           className="mb-2 ml-4"
-          style={{ color: "purple" }}
+          style={{ color: "#FF4D79" }}
           src={uploadingImg}
           alt=""
         />
@@ -148,7 +148,7 @@ export default class Signup extends Component {
                   <FontAwesomeIcon
                     icon={faCloudUploadAlt}
                     size="3x"
-                    style={{ color: "purple", cursor: "pointer" }}
+                    style={{ color: "#FF4D79", cursor: "pointer" }}
                   />
                   {loadingtext}
                 </div>
@@ -163,10 +163,10 @@ export default class Signup extends Component {
             <span className="text-danger text-center">Not ready!!</span>
           )} */}
           <button
-            className="btn btn-lg btn-primary btn-block"
+            className="button button-primary button-shadow"
             onClick={() => this.onClickSignup()}
           >
-            Sign in
+            Sign up now
           </button>
           {/* <p className="mt-5 mb-3 text-muted">&copy; 2017-2018</p> */}
         </form>

@@ -22,7 +22,7 @@ export default class Login extends Component {
 
   onClickLogin = () => {
     this.props.onClickLogin(this.state.email, this.state.password);
-    this.props.history.push("/home/");
+    this.props.history.push("/");
   };
 
   render() {
@@ -44,13 +44,13 @@ export default class Login extends Component {
           <input
             type="password"
             id="inputPassword"
-            className="form-control"
+            className="form-control mb-2"
             placeholder="Password"
             required
             onChange={e => this.handleTextChange("", e.target.value)}
           />
           <button
-            className="btn btn-lg btn-primary btn-block"
+            className="button button-primary button-shadow"
             onClick={() => this.onClickLogin()}
           >
             Sign in
